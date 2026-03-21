@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="斑马英语 S1–S6 分级对照：国际阅读对标、学习成果多场景筛选、学习内容与课程形式三档文案；附上课形式说明。纯静态页，可托管后分享给任何人随时访问。"
+  />
+  <meta name="theme-color" content="#165dff" />
+  <meta property="og:title" content="斑马英语 S1–S6 · 分级对照与上课形式" />
+  <meta
+    property="og:description"
+    content="S1–S6 级别、对标标尺、学习成果与上课形式一览。支持筛选与多选展示。"
+  />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <title>斑马英语 S1–S6 · 分级对照与上课形式</title>
+  <style>
+    :root {
+      --border: #e5e6eb;
+      --header-bg: #f2f3f5;
+      --text: #1d2129;
+      --muted: #86909c;
+      --accent: #165dff;
+      --cell-pad: 12px 14px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--text);
+      background: #fff;
+    }
+    .page { max-width: 100%; padding: 20px 24px 48px; }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    table.lib {
+      width: 100%;
+      min-width: 960px;
+      border-collapse: collapse;
+      table-layout: auto;
+    }
+    table.lib th,
+    table.lib td {
+      border: 1px solid var(--border);
+      padding: var(--cell-pad);
+      vertical-align: top;
+      text-align: left;
+    }
+    table.lib thead th {
+      background: var(--header-bg);
+      font-weight: 600;
+      font-size: 12px;
+      color: var(--text);
+    }
+    table.lib thead th.th-scenes {
+      white-space: normal;
+    }
+    .th-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .th-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .scene-btn {
+      font: inherit;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 9px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: #fff;
+      color: var(--text);
+      cursor: pointer;
+      line-height: 1.35;
+    }
+    .scene-btn:hover {
+      border-color: #c9cdd4;
+      background: #fafbfc;
+    }
+    .scene-btn.is-active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    table.lib .col-level { width: 52px; font-weight: 600; background: #fafbfc; }
+    table.lib .col-age { width: 112px; }
+    table.lib .col-bench { width: 122px; font-size: 12px; color: #4e5969; }
+    table.lib .col-outcome {
+      min-width: 260px;
+      max-width: 360px;
+      font-size: 12px;
+      line-height: 1.6;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+    table.lib .col-learn,
+    table.lib .col-format {
+      min-width: 200px;
+      max-width: 320px;
+      font-size: 12px;
+      line-height: 1.6;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+    .bench-line { margin: 0 0 4px; }
+    .bench-line:last-child { margin-bottom: 0; }
+    .bench-k { color: var(--muted); font-size: 11px; margin-right: 4px; }
+    ul.dash {
+      margin: 0;
+      padding-left: 1.1em;
+    }
+    ul.dash li { margin-bottom: 4px; }
+    ol.step {
+      margin: 0;
+      padding-left: 0;
+      list-style: none;
+      counter-reset: step;
+    }
+    ol.step li {
+      position: relative;
+      padding-left: 1.6em;
+      margin-bottom: 6px;
+      counter-increment: step;
+    }
+    ol.step li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1.25em;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      background: var(--accent);
+      border-radius: 3px;
+      line-height: 1.45;
+    }
+    .p { margin: 0; }
+    .cell-outcome .cell-stack .p + .p { margin-top: 0.55em; }
+    /* 勿对 td 使用 display:flex，会破坏表格列对齐；堆叠放在内层 */
+    .cell-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 14px;
+      min-width: 0;
+    }
+    .cell-pane {
+      display: none;
+      width: 100%;
+    }
+    #main-lib.outcome-numbers .cell-outcome .cell-pane[data-pane="numbers"],
+    #main-lib.outcome-tags .cell-outcome .cell-pane[data-pane="tags"],
+    #main-lib.outcome-narrative .cell-outcome .cell-pane[data-pane="narrative"],
+    #main-lib.learn-detail .cell-learn .cell-pane[data-pane="detail"],
+    #main-lib.learn-brief .cell-learn .cell-pane[data-pane="brief"],
+    #main-lib.learn-summary .cell-learn .cell-pane[data-pane="summary"],
+    #main-lib.format-detail .cell-format .cell-pane[data-pane="detail"],
+    #main-lib.format-brief .cell-format .cell-pane[data-pane="brief"],
+    #main-lib.format-summary .cell-format .cell-pane[data-pane="summary"] {
+      display: block;
+    }
+    footer {
+      margin-top: 28px;
+      font-size: 11px;
+      color: var(--muted);
+      max-width: 720px;
+    }
+    tr:target { outline: 2px solid var(--accent); outline-offset: -2px; }
+    .module-levels { margin-top: 20px; }
+    .module + .module { margin-top: 40px; }
+    .module-title {
+      margin: 0 0 12px;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .module-lead {
+      margin: 0 0 14px;
+      max-width: 900px;
+      font-size: 13px;
+      line-height: 1.65;
+      color: #4e5969;
+    }
+    .module-class-format .scroll {
+      border-radius: 6px;
+    }
+    table.format-spec {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+      table-layout: auto;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text);
+    }
+    table.format-spec th,
+    table.format-spec td {
+      border: 1px solid var(--border);
+      padding: 12px 14px;
+      vertical-align: top;
+      text-align: left;
+    }
+    table.format-spec thead th {
+      background: var(--header-bg);
+      font-weight: 600;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    table.format-spec tbody th[scope="row"] {
+      width: 44px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 12px;
+      color: var(--muted);
+      background: #fafbfc;
+      font-variant-numeric: tabular-nums;
+    }
+    table.format-spec .fp-point {
+      width: 20%;
+      min-width: 132px;
+      max-width: 220px;
+      font-weight: 600;
+      background: #fcfcfd;
+    }
+    table.format-spec .fp-desc {
+      color: #4e5969;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>斑马英语 · S1–S6 分级对照与上课形式</h1>
+
+    <section class="module module-levels" id="module-level-map" aria-labelledby="module-level-map-title">
+      <h2 class="module-title" id="module-level-map-title">分级对照</h2>
+      <div class="scroll">
+      <table
+        class="lib outcome-numbers learn-detail format-detail"
+        id="main-lib"
+        data-outcome="numbers"
+        data-learn="detail"
+        data-format="detail"
+      >
+        <thead>
+          <tr>
+            <th scope="col" class="col-level">级别</th>
+            <th scope="col" class="col-age">年龄 · 校内对标</th>
+            <th scope="col" class="col-bench">国际阅读对标<br /><span style="font-weight:400;color:var(--muted)">剑桥 · RAZ · 牛津树 · 蓝思</span></th>
+            <th scope="col" class="col-outcome th-scenes">
+              <div class="th-title">学习成果</div>
+              <div class="th-actions" role="group" aria-label="学习成果展示场景（可多选）">
+                <button type="button" class="scene-btn is-active" data-set="outcome" data-value="numbers" aria-pressed="true">数字背书</button>
+                <button type="button" class="scene-btn" data-set="outcome" data-value="tags" aria-pressed="false">短句 · 标签向</button>
+                <button type="button" class="scene-btn" data-set="outcome" data-value="narrative" aria-pressed="false">段落 · 场景叙事</button>
+              </div>
+            </th>
+            <th scope="col" class="col-learn th-scenes">
+              <div class="th-title">学习内容</div>
+              <div class="th-actions" role="group" aria-label="学习内容场景（可多选）">
+                <button type="button" class="scene-btn" data-set="learn" data-value="summary" aria-pressed="false">概括</button>
+                <button type="button" class="scene-btn" data-set="learn" data-value="brief" aria-pressed="false">简版</button>
+                <button type="button" class="scene-btn is-active" data-set="learn" data-value="detail" aria-pressed="true">详细介绍</button>
+              </div>
+            </th>
+            <th scope="col" class="col-format th-scenes">
+              <div class="th-title">课程形式</div>
+              <div class="th-actions" role="group" aria-label="课程形式场景（可多选）">
+                <button type="button" class="scene-btn" data-set="format" data-value="summary" aria-pressed="false">概括</button>
+                <button type="button" class="scene-btn" data-set="format" data-value="brief" aria-pressed="false">简版</button>
+                <button type="button" class="scene-btn is-active" data-set="format" data-value="detail" aria-pressed="true">详细介绍</button>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      </div>
+    </section>
+
+    <section class="module module-class-format" id="module-class-format" aria-labelledby="module-class-format-title">
+      <h2 class="module-title" id="module-class-format-title">上课形式</h2>
+      <p class="module-lead">
+        斑马英语的课程特色和上课形式整体围绕「沉浸式英语习得」和「系统进阶」来设计，课程结构清晰、形式多样。
+      </p>
+      <div class="scroll">
+        <table class="format-spec" id="class-format-spec">
+          <thead>
+            <tr>
+              <th scope="col">序号</th>
+              <th scope="col">要点</th>
+              <th scope="col">说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1</th>
+              <td class="fp-point">教学理念与整体定位</td>
+              <td class="fp-desc">斑马英语基于二语习得理论，强调通过大量可理解输入自然习得语言，而不是单点讲解知识。课程从交际能力、阅读能力和文化意识三个维度出发，目标是培养孩子能真实使用英语、持续阅读英语的能力。</td>
+            </tr>
+            <tr>
+              <th scope="row">2</th>
+              <td class="fp-point">上课整体形式</td>
+              <td class="fp-desc">课程以每天短时高频学习为核心，每周学习5天。每天由多个固定学习环节组成，通过视频、互动练习、跟读和测评形成完整的输入与输出闭环。</td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td class="fp-point">核心视频课形式</td>
+              <td class="fp-desc">每天的视频以外教真人表演结合动画故事呈现，全部为全英文环境。通过生活化或故事化场景自然呈现词汇、句型和表达方式，让孩子在「看懂情境」的过程中理解语言。</td>
+            </tr>
+            <tr>
+              <th scope="row">4</th>
+              <td class="fp-point">多感官互动设计</td>
+              <td class="fp-desc">课程中大量使用跟读、点选、拖拽、投票、语音互动等形式，调动孩子的听觉、视觉和动觉参与，帮助孩子更好地理解和记忆语言内容。</td>
+            </tr>
+            <tr>
+              <th scope="row">5</th>
+              <td class="fp-point">分级与系统进阶</td>
+              <td class="fp-desc">课程按照S1到S6逐级进阶，不同级别在词汇数量、语言难度、阅读深度和表达要求上逐步提升，确保孩子的学习难度与能力发展匹配。</td>
+            </tr>
+            <tr>
+              <th scope="row">6</th>
+              <td class="fp-point">TV互动课形式</td>
+              <td class="fp-desc">每周五设置TV互动课，由外教通过直播或互动形式带领孩子复习当周内容。课程以完整情节展开，融合答题、跟读、投票等互动，强化语言输入和开口输出。</td>
+            </tr>
+            <tr>
+              <th scope="row">7</th>
+              <td class="fp-point">练习与反馈机制</td>
+              <td class="fp-desc">课程中配有Quiz等互动练习，通过即时反馈和奖励机制，帮助孩子巩固所学内容，同时增强学习参与感和成就感。</td>
+            </tr>
+            <tr>
+              <th scope="row">8</th>
+              <td class="fp-point">阅读与语言能力培养</td>
+              <td class="fp-desc">随着级别提升，课程逐步加强绘本阅读和文本理解，引导孩子从「听懂、会说」过渡到「能读、能理解」，培养长期英语阅读能力。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer>
+      静态页 · 无外链脚本。更新数据请编辑本文件内 <code>COPY_ROWS</code> 数组，或与知识库
+      <code>.cursor/skills/zebra-ai-course-knowledge/knowledge-base.md</code> 同步。
+      「学习内容 / 课程形式」三档文案见 <code>COPY_ROWS</code>：<code>learnSummary</code> / <code>learnBrief</code> / <code>learnDetail</code>，<code>formatSummary</code> / <code>formatBrief</code> / <code>formatDetail</code>。表头各组按钮支持<strong>多选</strong>，选中项在单元格内自上而下并列展示。
+    </footer>
+  </div>
+
+  <script>
+    /** 文案灵感库数据源：与课程表对齐，可按飞书迭代替换 */
+    const COPY_ROWS = [
+      {
+        id: "s1",
+        level: "S1",
+        ageSchool: "3 岁\n幼小衔接",
+        bench: { cambridge: "Starters", raz: "aa–B", ort: "Level 1–2", lexile: "BR–150L" },
+        summary: ["建立英语音素意识，激发兴趣。", "以「听、看、跟」为主，愿意接触英文环境。"],
+        concrete:
+          "约 3 岁、幼小衔接前后，别急着上强度——动画 + 儿歌把娃「泡」在可理解的英文里，颜色动物从画面里蹦出来就懂，比干听单词亲切多了。\n\n你会慢慢发现 ta 愿意跟唱、敢模仿发音，26 个字母的名和形也混了个脸熟。144 个核心词、48 条常用表达是在情境里「捡」到的，不是硬背清单；兴趣先稳住，后面拼读和开口才不费劲。",
+        advanced: [
+          "掌握核心词 144 个",
+          "认读字母名与形 26 个",
+          "理解并跟学常用表达 48 条",
+          "形成「动画 + 儿歌」为主的听力输入习惯",
+        ],
+        learnBrief: "以听懂和模仿为主，建立基础语音语感，积累高频词，激发开口兴趣。",
+        learnDetail:
+          "建立英语语音与语感基础，积累高频核心词和简单感叹语，初步接触字母名称与形态，不要求拼读，重点在听懂、模仿和愿意开口。",
+        formatBrief: "通过动画、儿歌和绘本营造轻松环境，进行大量听力输入和简单互动。",
+        formatDetail:
+          "动画视频、儿歌和绘本为主，围绕生活化场景进行大量听觉输入，配合跟读和轻量互动练习，营造轻松的英语启蒙环境。",
+        learnSummary: "建立语音与语感基础，积累高频词汇，初识字母形态，形成开口意识。",
+        formatSummary: "动画与绘本输入，生活化场景听读，轻量互动启蒙。",
+      },
+      {
+        id: "s2",
+        level: "S2",
+        ageSchool: "4–5 岁\n幼小衔接",
+        bench: { cambridge: "Starters", raz: "C–D", ort: "Level 3", lexile: "BR–250L" },
+        summary: ["从词到句，完整句表达基本需求与喜好。", "自然拼读入门，故事与练习结合。"],
+        concrete:
+          "4–5 岁还在幼小衔接，正是从「蹦词」到「敢说整句」的好时候。故事动画推着剧情走，练习里同一句型多刷几遍，某一天你会突然听到 ta 自己冒出 I want… / I like… 这种完整句。\n\n432 个核心词打底，26 个字母音在耳朵里扎根，48 条简单表达覆盖吃喝玩睡的小场景；自然拼读跟着入门。家长侧最直观的爽点：敢开口、句子变完整，像用英文「点单」一样把需求说清楚。",
+        advanced: [
+          "累计核心词 432 个",
+          "掌握 26 个字母音",
+          "简单表达 48 条",
+          "能用完整句表达基本需求与喜好",
+        ],
+        learnBrief: "系统认识字母和字母音，扩充词汇量，开始用短句表达并建立初步阅读意识。",
+        learnDetail:
+          "在启蒙基础上扩充词汇量，系统学习26个字母的大小写、字母音及基础自然拼读知识，开始使用完整短句表达基本意思，建立初步图文阅读意识。",
+        formatBrief: "在动画和绘本基础上加入字母与拼读学习，用视频、跟读和小测连接听说读。",
+        formatDetail:
+          "动画故事与绘本继续作为主要载体，加入明确的字母与拼读学习环节，通过视频讲解、跟读练习和简单测验，推动听说向「听说读」过渡。",
+        learnSummary: "扩充基础词汇，掌握字母与字母音，初步自然拼读，使用完整短句表达。",
+        formatSummary: "动画与绘本结合，系统字母拼读教学，跟读与基础测评。",
+      },
+      {
+        id: "s3",
+        level: "S3",
+        ageSchool: "6–7 岁\n三年级（表内对标）",
+        bench: { cambridge: "Starters", raz: "E", ort: "Level 4", lexile: "0L–350L" },
+        summary: ["自然拼读系统化，读写意识建立。", "出现初步读说能力，进入短句与简单对话。"],
+        concrete:
+          "6–7 岁（表内大致对标三年级前后），很多人卡在「会做题、不敢读」。这一阶段用 56 组拼读规则/组合配短阅读，把「见词能拼」练实；720 个核心词往上堆，33 个常用句型 + 23 组情景对话，让读和说绑在同一条线上。\n\n具象一点：娃指着读本上的句子能跟读、能简单复述，回家不是只会跟老师读、自己张不开嘴那种——拼写和阅读也开始有闭环感。",
+        advanced: [
+          "累计核心词 720 个",
+          "拼读规则/组合 56 组",
+          "常用句型 33 个",
+          "情景对话 23 组",
+        ],
+        learnBrief: "系统掌握自然拼读规则，能拼读常见词汇，形成读说同步发展的能力。",
+        learnDetail:
+          "系统学习自然拼读规则，掌握字母音和常见拼读组合，能够拼读和认读常见词汇；学习常用句型和情景对话，形成初步读说并行的能力。",
+        formatBrief: "以固定课程结构展开，通过拼读、阅读和口语练习反复巩固读说能力。",
+        formatDetail:
+          "课程结构固定，包含拼读学习、词汇输入、绘本阅读和口语跟读等环节，通过规则学习与反复练习结合，帮助孩子建立稳定的读说路径。",
+        learnSummary: "系统掌握自然拼读规则，拼读常见词汇，形成读说并行能力。",
+        formatSummary: "固定学习结构，拼读讲解、词汇输入、阅读与口语练习结合。",
+      },
+      {
+        id: "s4",
+        level: "S4",
+        ageSchool: "8 岁\n四年级（表内对标）",
+        bench: { cambridge: "Movers", raz: "F–G", ort: "Level 5–6", lexile: "200L–450L" },
+        summary: ["由句到段：理解与表达同步升级。", "自主阅读意识增强，接触非虚构类文本。"],
+        concrete:
+          "约 8 岁、表内对标四年级，阅读明显「加戏」：从「读懂一句话」升级到「这一段在讲什么」。1008 个核心词 + 96 个高频词稳住认读，92 条拼读规则巩固，36 个句型、60 组对话撑起表达底盘。\n\n英文绘本开始能自己翻，非虚构小知识也能啃一点。家长可感的画面：你问「这段讲了哪几点」，娃能指指画画说出来——读、理解、口头捋一遍，小闭环跑起来了。",
+        advanced: [
+          "累计核心词 1008 个",
+          "高频词 96 个",
+          "拼读规则 92 条",
+          "句型 36 个 · 对话 60 组",
+        ],
+        learnBrief: "重点提升阅读理解，能读懂语段并进行多句表达和话题交流。",
+        learnDetail:
+          "强化阅读能力，掌握更多拼读规则和高频词，能够独立阅读语段级文本并理解细节；表达从单句发展为多句，能围绕话题进行较完整交流。",
+        formatBrief: "提高阅读占比，结合动画、虚构与非虚构文本，完成读到说的闭环训练。",
+        formatDetail:
+          "阅读比重明显提升，动画视频与阅读材料并重，加入非虚构文本，通过理解练习与表达训练，形成「读—理解—表达」的完整学习闭环。",
+        learnSummary: "提升阅读能力，独立理解语段文本，实现连续语言表达。",
+        formatSummary: "阅读比重提升，动画与文本并重，理解与表达训练结合。",
+      },
+      {
+        id: "s5",
+        level: "S5",
+        ageSchool: "9 岁\n五年级（表内对标）",
+        bench: { cambridge: "Flyers", raz: "H–J", ort: "Level 7", lexile: "250L–500L" },
+        summary: ["篇章结构与逻辑更清晰。", "语法与阅读策略并进，表达更有条理。"],
+        concrete:
+          "约 9 岁、表内对标五年级，故事之外主题阅读变多——要的不只是「看懂了」，还要分清结构、抓住观点。1584 词 + 141 句型 + 137 组对话打底，48 个基础语法点 + 6 种阅读策略把「怎么想、怎么说」拆细练。\n\n你会在口语或小练笔里看到变化：先抛观点、再补例子，话不再碎成一串词，而是能自己圆一小段逻辑。",
+        advanced: [
+          "累计核心词 1584 个",
+          "句型 141 个 · 对话 137 组",
+          "基础语法点 48 个",
+          "阅读策略 6 种",
+        ],
+        learnBrief: "加强篇章理解和逻辑表达，学习基础语法与阅读策略，清晰表达观点。",
+        learnDetail:
+          "提升篇章理解与表达深度，接触多种文体，学习初阶语法和阅读策略，理解文章结构与逻辑关系，能够较清晰地用英语表达观点。",
+        formatBrief: "以话题和知识点为核心，结合阅读、讲解和表达练习学习语言规则。",
+        formatDetail:
+          "弱化故事线，转向以话题和知识点为核心，通过阅读文本、语法讲解视频和表达练习结合，引导孩子在理解中学习语言规则。",
+        learnSummary: "加强篇章理解，学习初阶语法与阅读策略，清晰表达观点。",
+        formatSummary: "以话题与知识点为核心，阅读、讲解与表达练习结合。",
+      },
+      {
+        id: "s6",
+        level: "S6",
+        ageSchool: "10 岁\n六年级（表内对标）",
+        bench: { cambridge: "KET", raz: "K–L", ort: "Level 8–9", lexile: "400L–650L" },
+        summary: ["多体裁阅读与高阶输出。", "逻辑表达、复述与主题演讲能力强化。"],
+        concrete:
+          "约 10 岁、表内对标六年级，走主题路径把阅读和口语拧成一股绳：192 篇英文短篇、约 10 万词量级输入，阅读量先堆起来；12 套阅读/理解能力项把信息提取、推理这些「硬本事」拆开来练。\n\n详表口径下进阶词 864 个，配合 240 条口语表达要点，能支撑故事复述、观点陈述到主题演讲式输出。对外若要用总表里的「核心词 2016」等另一套口径，务必和教研对齐——别跟「864 进阶词」混成同一个数对外讲。",
+        advanced: [
+          "进阶词 864 个（详表口径，与总表「核心词 2016」勿混算）",
+          "英文短篇阅读 192 篇（约 10 万词量级）",
+          "阅读/理解能力项 12 套",
+          "口语表达要点 240 条",
+        ],
+        learnBrief: "通过主题阅读训练信息提取和综合表达，能进行较完整的口头输出。",
+        learnDetail:
+          "以主题阅读为核心，大量阅读多体裁文本，系统训练信息提取、篇章理解和逻辑表达能力，能够进行故事复述、主题表达和较完整的口头输出。",
+        formatBrief: "围绕主题整合视频、阅读、表达和测评，全面提升英语综合运用能力。",
+        formatDetail:
+          "围绕主题展开学习，结合视频导入、阅读理解、口语表达和测评练习，强调阅读与表达并重，整体提升语言综合运用能力。",
+        learnSummary: "深化主题阅读，训练篇章理解与逻辑表达，提升综合运用能力。",
+        formatSummary: "主题式学习路径，视频导入、阅读理解、表达与测评结合。",
+      },
+    ];
+
+    function benchHtml(b) {
+      const lines = [
+        ["剑桥", b.cambridge],
+        ["RAZ", b.raz],
+        ["牛津树", b.ort],
+        ["蓝思", b.lexile],
+      ];
+      return lines
+        .map(
+          ([k, v]) =>
+            `<div class="bench-line"><span class="bench-k">${k}</span>${escapeHtml(v)}</div>`
+        )
+        .join("");
+    }
+
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function ulHtml(items) {
+      return `<ul class="dash">${items.map((t) => `<li>${escapeHtml(t)}</li>`).join("")}</ul>`;
+    }
+
+    function olHtml(items) {
+      return `<ol class="step">${items.map((t) => `<li>${escapeHtml(t)}</li>`).join("")}</ol>`;
+    }
+
+    function narrativeHtml(concrete) {
+      return String(concrete)
+        .split(/\n\n+/)
+        .map((p) => p.trim())
+        .filter(Boolean)
+        .map((p) => `<p class="p">${escapeHtml(p)}</p>`)
+        .join("");
+    }
+
+    function outcomeCell(row) {
+      return `
+        <td class="col-outcome cell-outcome">
+          <div class="cell-stack">
+            <div class="cell-pane" data-pane="numbers">${olHtml(row.advanced)}</div>
+            <div class="cell-pane" data-pane="tags">${ulHtml(row.summary)}</div>
+            <div class="cell-pane" data-pane="narrative">${narrativeHtml(row.concrete)}</div>
+          </div>
+        </td>`;
+    }
+
+    function learnFormatCell(className, detailText, briefText, summaryText) {
+      return `
+        <td class="${className}">
+          <div class="cell-stack">
+            <div class="cell-pane" data-pane="summary">${escapeHtml(summaryText)}</div>
+            <div class="cell-pane" data-pane="brief">${escapeHtml(briefText)}</div>
+            <div class="cell-pane" data-pane="detail">${escapeHtml(detailText)}</div>
+          </div>
+        </td>`;
+    }
+
+    const tbody = document.getElementById("tbody");
+    COPY_ROWS.forEach((row) => {
+      const tr = document.createElement("tr");
+      tr.id = "row-" + row.id;
+      tr.innerHTML = `
+        <td class="col-level">${escapeHtml(row.level)}</td>
+        <td class="col-age">${escapeHtml(row.ageSchool).replace(/\n/g, "<br />")}</td>
+        <td class="col-bench">${benchHtml(row.bench)}</td>
+        ${outcomeCell(row)}
+        ${learnFormatCell("col-learn cell-learn", row.learnDetail, row.learnBrief, row.learnSummary)}
+        ${learnFormatCell("col-format cell-format", row.formatDetail, row.formatBrief, row.formatSummary)}
+      `;
+      tbody.appendChild(tr);
+    });
+
+    const table = document.getElementById("main-lib");
+    const SCENE_CLASS = {
+      outcome: { numbers: "outcome-numbers", tags: "outcome-tags", narrative: "outcome-narrative" },
+      learn: { detail: "learn-detail", brief: "learn-brief", summary: "learn-summary" },
+      format: { detail: "format-detail", brief: "format-brief", summary: "format-summary" },
+    };
+
+    function syncSceneDataset() {
+      ["outcome", "learn", "format"].forEach((set) => {
+        const map = SCENE_CLASS[set];
+        const active = Object.entries(map)
+          .filter(([value]) =>
+            table.querySelector(`.scene-btn[data-set="${set}"][data-value="${value}"].is-active`)
+          )
+          .map(([value]) => value);
+        table.dataset[set] = active.join(",");
+      });
+    }
+
+    function toggleScene(set, value) {
+      const map = SCENE_CLASS[set];
+      if (!map) return;
+      const cls = map[value];
+      const btn = table.querySelector(`.scene-btn[data-set="${set}"][data-value="${value}"]`);
+      if (!btn || !cls) return;
+      const on = btn.classList.toggle("is-active");
+      table.classList.toggle(cls, on);
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+      syncSceneDataset();
+    }
+
+    table.querySelectorAll(".scene-btn[data-set]").forEach((btn) => {
+      btn.addEventListener("click", () => toggleScene(btn.dataset.set, btn.dataset.value));
+    });
+    syncSceneDataset();
+  </script>
+</body>
+</html>
