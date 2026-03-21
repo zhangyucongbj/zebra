@@ -247,6 +247,44 @@
       word-break: break-word;
       overflow-wrap: break-word;
     }
+    table.price-spec {
+      width: 100%;
+      min-width: 420px;
+      max-width: 560px;
+      border-collapse: collapse;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--text);
+    }
+    table.price-spec th,
+    table.price-spec td {
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      vertical-align: middle;
+      text-align: left;
+    }
+    table.price-spec thead th {
+      background: var(--header-bg);
+      font-weight: 600;
+      font-size: 12px;
+    }
+    table.price-spec tbody td:first-child {
+      width: 38%;
+      font-weight: 500;
+      color: #4e5969;
+      background: #fcfcfd;
+    }
+    table.price-spec tbody td:last-child {
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+    .module-pricing .price-foot {
+      margin: 10px 0 0;
+      font-size: 11px;
+      color: var(--muted);
+      max-width: 560px;
+      line-height: 1.5;
+    }
   </style>
 </head>
 <body>
@@ -357,6 +395,54 @@
           </tbody>
         </table>
       </div>
+    </section>
+
+    <section class="module module-pricing" id="module-pricing" aria-labelledby="module-pricing-title">
+      <h2 class="module-title" id="module-pricing-title">价格</h2>
+      <p class="module-lead">
+        常见售卖口径整理，便于对比周期与单价；实际以斑马当期活动页、App 内标价及订单为准。
+      </p>
+      <div class="scroll">
+        <table class="price-spec" id="price-spec">
+          <thead>
+            <tr>
+              <th scope="col">口径</th>
+              <th scope="col">参考价格</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>年付</td>
+              <td>3200 元 / 年</td>
+            </tr>
+            <tr>
+              <td>半年付</td>
+              <td>1600 元 / 半年</td>
+            </tr>
+            <tr>
+              <td>月付</td>
+              <td>200+ 元 / 月</td>
+            </tr>
+            <tr>
+              <td>周付</td>
+              <td>60 元 / 周</td>
+            </tr>
+            <tr>
+              <td>按节</td>
+              <td>12 元 / 节</td>
+            </tr>
+            <tr>
+              <td>体验 · 节数包</td>
+              <td>1 元领取 14 节</td>
+            </tr>
+            <tr>
+              <td>体验 · 天数</td>
+              <td>1 元 / 14 天</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="price-foot">价格随活动变化，下单前请再次核对；本页仅供内部协作与分享示意。</p>
     </section>
 
     <footer>
