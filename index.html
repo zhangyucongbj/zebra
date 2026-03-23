@@ -49,7 +49,7 @@
     }
     table.lib {
       width: 100%;
-      min-width: 960px;
+      min-width: 1060px;
       border-collapse: collapse;
       table-layout: auto;
     }
@@ -100,6 +100,13 @@
       color: #fff;
     }
     table.lib .col-level { width: 52px; font-weight: 600; background: #fafbfc; }
+    table.lib .col-period {
+      min-width: 108px;
+      max-width: 140px;
+      font-size: 12px;
+      line-height: 1.45;
+      word-break: break-word;
+    }
     table.lib .col-age { width: 112px; }
     table.lib .col-bench { width: 122px; font-size: 12px; color: #4e5969; }
     table.lib .col-outcome {
@@ -304,6 +311,7 @@
         <thead>
           <tr>
             <th scope="col" class="col-level">级别</th>
+            <th scope="col" class="col-period">时期<br /><span style="font-weight:400;color:var(--muted)">总表阶段</span></th>
             <th scope="col" class="col-age">年龄 · 校内对标</th>
             <th scope="col" class="col-bench">国际阅读对标<br /><span style="font-weight:400;color:var(--muted)">剑桥 · RAZ · 牛津树 · 蓝思</span></th>
             <th scope="col" class="col-outcome th-scenes">
@@ -448,7 +456,7 @@
     <footer>
       静态页 · 无外链脚本。更新数据请编辑本文件内 <code>COPY_ROWS</code> 数组，或与知识库
       <code>.cursor/skills/zebra-ai-course-knowledge/knowledge-base.md</code> 同步。
-      「学习内容 / 课程形式」三档文案见 <code>COPY_ROWS</code>：<code>learnSummary</code> / <code>learnBrief</code> / <code>learnDetail</code>，<code>formatSummary</code> / <code>formatBrief</code> / <code>formatDetail</code>。表头各组按钮支持<strong>多选</strong>，选中项在单元格内自上而下并列展示。
+      各级 <code>period</code> 为总表阶段（时期）。「学习内容 / 课程形式」三档文案见 <code>COPY_ROWS</code>：<code>learnSummary</code> / <code>learnBrief</code> / <code>learnDetail</code>，<code>formatSummary</code> / <code>formatBrief</code> / <code>formatDetail</code>。表头各组按钮支持<strong>多选</strong>，选中项在单元格内自上而下并列展示。
     </footer>
   </div>
 
@@ -458,6 +466,7 @@
       {
         id: "s1",
         level: "S1",
+        period: "兴趣启蒙期",
         ageSchool: "3 岁\n幼小衔接",
         bench: { cambridge: "Starters", raz: "aa–B", ort: "Level 1–2", lexile: "BR–150L" },
         summary: ["建立英语音素意识，激发兴趣。", "以「听、看、跟」为主，愿意接触英文环境。"],
@@ -481,6 +490,7 @@
       {
         id: "s2",
         level: "S2",
+        period: "词汇积累期",
         ageSchool: "4–5 岁\n幼小衔接",
         bench: { cambridge: "Starters", raz: "C–D", ort: "Level 3", lexile: "BR–250L" },
         summary: ["从词到句，完整句表达基本需求与喜好。", "自然拼读入门，故事与练习结合。"],
@@ -504,6 +514,7 @@
       {
         id: "s3",
         level: "S3",
+        period: "自然拼读期",
         ageSchool: "6–7 岁\n三年级（表内对标）",
         bench: { cambridge: "Starters", raz: "E", ort: "Level 4", lexile: "0L–350L" },
         summary: ["自然拼读系统化，读写意识建立。", "出现初步读说能力，进入短句与简单对话。"],
@@ -527,6 +538,7 @@
       {
         id: "s4",
         level: "S4",
+        period: "自主阅读期",
         ageSchool: "8 岁\n四年级（表内对标）",
         bench: { cambridge: "Movers", raz: "F–G", ort: "Level 5–6", lexile: "200L–450L" },
         summary: ["由句到段：理解与表达同步升级。", "自主阅读意识增强，接触非虚构类文本。"],
@@ -550,6 +562,7 @@
       {
         id: "s5",
         level: "S5",
+        period: "桥梁书期 / 语法期",
         ageSchool: "9 岁\n五年级（表内对标）",
         bench: { cambridge: "Flyers", raz: "H–J", ort: "Level 7", lexile: "250L–500L" },
         summary: ["篇章结构与逻辑更清晰。", "语法与阅读策略并进，表达更有条理。"],
@@ -573,6 +586,7 @@
       {
         id: "s6",
         level: "S6",
+        period: "入章期",
         ageSchool: "10 岁\n六年级（表内对标）",
         bench: { cambridge: "KET", raz: "K–L", ort: "Level 8–9", lexile: "400L–650L" },
         summary: ["多体裁阅读与高阶输出。", "逻辑表达、复述与主题演讲能力强化。"],
@@ -663,6 +677,7 @@
       tr.id = "row-" + row.id;
       tr.innerHTML = `
         <td class="col-level">${escapeHtml(row.level)}</td>
+        <td class="col-period">${escapeHtml(row.period)}</td>
         <td class="col-age">${escapeHtml(row.ageSchool).replace(/\n/g, "<br />")}</td>
         <td class="col-bench">${benchHtml(row.bench)}</td>
         ${outcomeCell(row)}
