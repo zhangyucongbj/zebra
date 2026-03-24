@@ -373,12 +373,12 @@
   </style>
 </head>
 <body>
-  <div id="login-gate" class="login-gate" hidden>
+  <div id="login-gate" class="login-gate">
     <form id="login-form" class="login-card" autocomplete="off">
       <h2 class="login-title">斑马文案库</h2>
       <p class="login-sub">请输入账号密码后访问页面内容</p>
-      <p class="login-version">登录版本 v3</p>
-      <p class="login-hint">临时账号：<code>zebra</code> ｜ 临时密码：<code>123456</code></p>
+      <p class="login-version">登录版本 v4</p>
+      <p class="login-hint">请输入已分配的账号与密码。</p>
       <label class="login-label" for="login-username">账号</label>
       <input id="login-username" class="login-input" name="username" type="text" />
       <label class="login-label" for="login-password">密码</label>
@@ -387,7 +387,7 @@
       <div id="login-error" class="login-err"></div>
     </form>
   </div>
-  <div id="app-shell" class="app-shell">
+  <div id="app-shell" class="app-shell" hidden>
   <div class="page">
     <h1>斑马文案库</h1>
 
@@ -571,6 +571,8 @@
     function setLoginState(authed) {
       appShellEl.hidden = !authed;
       loginGateEl.hidden = authed;
+      appShellEl.style.display = authed ? "block" : "none";
+      loginGateEl.style.display = authed ? "none" : "grid";
       if (authed) {
         sessionStorage.setItem(AUTH_CONFIG.storageKey, "1");
       } else {
