@@ -319,6 +319,12 @@
       color: var(--muted);
       font-size: 12px;
     }
+    .login-hint {
+      margin: 0 0 8px;
+      color: #4e5969;
+      font-size: 12px;
+      line-height: 1.45;
+    }
     .login-label {
       display: block;
       margin: 10px 0 6px;
@@ -365,6 +371,7 @@
     <form id="login-form" class="login-card" autocomplete="off">
       <h2 class="login-title">斑马文案库</h2>
       <p class="login-sub">请输入账号密码后访问页面内容</p>
+      <p class="login-hint">临时账号：<code>zebra</code> ｜ 临时密码：<code>123456</code></p>
       <label class="login-label" for="login-username">账号</label>
       <input id="login-username" class="login-input" name="username" type="text" />
       <label class="login-label" for="login-password">密码</label>
@@ -542,8 +549,10 @@
 
   <script>
     const AUTH_CONFIG = {
-      username: "zebra",
-      password: "zebra2026",
+      users: [
+        { username: "zebra", passwords: ["123456", "zebra2026"] },
+        { username: "zhangyucongbj", passwords: ["123456", "zebra2026"] },
+      ],
       storageKey: "zebra_copylib_login_v1",
     };
 
@@ -573,11 +582,19 @@
       const formData = new FormData(loginFormEl);
       const username = String(formData.get("username") || "").trim();
       const password = String(formData.get("password") || "");
-      if (username === AUTH_CONFIG.username && password === AUTH_CONFIG.password) {
+      const matched = AUTH_CONFIG.users.some(
+        (u) => u.username === username && u.passwords.includes(password)
+      );
+      if (matched) {
         loginErrEl.textContent = "";
         setLoginState(true);
       } else {
         loginErrEl.textContent = "账号或密码错误，请重试。";
+        const pw = document.getElementById("login-password");
+        if (pw) {
+          pw.value = "";
+          pw.focus();
+        }
       }
     });
 
