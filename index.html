@@ -293,6 +293,7 @@
       line-height: 1.5;
     }
     .app-shell[hidden] { display: none !important; }
+    .login-gate[hidden] { display: none !important; }
     .login-gate {
       min-height: 100vh;
       display: grid;
@@ -318,6 +319,11 @@
       margin: 0 0 14px;
       color: var(--muted);
       font-size: 12px;
+    }
+    .login-version {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 11px;
     }
     .login-hint {
       margin: 0 0 8px;
@@ -371,6 +377,7 @@
     <form id="login-form" class="login-card" autocomplete="off">
       <h2 class="login-title">斑马文案库</h2>
       <p class="login-sub">请输入账号密码后访问页面内容</p>
+      <p class="login-version">登录版本 v3</p>
       <p class="login-hint">临时账号：<code>zebra</code> ｜ 临时密码：<code>123456</code></p>
       <label class="login-label" for="login-username">账号</label>
       <input id="login-username" class="login-input" name="username" type="text" />
@@ -580,10 +587,13 @@
     loginFormEl.addEventListener("submit", (e) => {
       e.preventDefault();
       const formData = new FormData(loginFormEl);
-      const username = String(formData.get("username") || "").trim();
-      const password = String(formData.get("password") || "");
+      const normalize = (s) => String(s || "").normalize("NFKC").trim();
+      const username = normalize(formData.get("username")).toLowerCase();
+      const password = normalize(formData.get("password"));
       const matched = AUTH_CONFIG.users.some(
-        (u) => u.username === username && u.passwords.includes(password)
+        (u) =>
+          normalize(u.username).toLowerCase() === username &&
+          u.passwords.some((p) => normalize(p) === password)
       );
       if (matched) {
         loginErrEl.textContent = "";
